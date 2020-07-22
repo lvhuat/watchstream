@@ -100,6 +100,7 @@ func main() {
 	for _, dbName := range targetDBs {
 		for _, collName := range targetColls {
 			coll := client.Database(dbName).Collection(collName)
+			log.WithField("ns", dbName+"."+collName).Infoln("StartWatch")
 
 			go func() {
 				stream, err := coll.Watch(
@@ -117,7 +118,7 @@ func main() {
 
 				for {
 					if !stream.Next(context.Background()) {
-						time.Sleep(time.Second)
+						time.Sleep(time.Second * 10)
 					}
 
 					var doc ChangeDoc
