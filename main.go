@@ -105,7 +105,7 @@ func main() {
 			go func() {
 				stream, err := coll.Watch(
 					context.Background(),
-					bson.M{},
+					[]bson.M{},
 					options.ChangeStream().
 						SetFullDocument(options.UpdateLookup),
 				)
@@ -128,9 +128,12 @@ func main() {
 					}
 
 					ret, _ := json.Marshal(doc)
+					
 					logrus.Infoln("ChangeStreamEvent", string(ret))
 				}
 			}()
 		}
 	}
+
+	select{}
 }
